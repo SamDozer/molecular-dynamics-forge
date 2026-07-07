@@ -1,0 +1,37 @@
+# ---------------------------------------------------------------------------
+# Reproducible mdforge workflow for the alpha-zein (A8HNE1) system.
+#
+# Run it with a single command:
+#     mdforge analyze --config examples/alpha_zein_A8HNE1/config.yaml
+#
+# CLI flags override anything set here, so the same file works on HPC/batch.
+# ---------------------------------------------------------------------------
+
+# Point this at your GROMACS simulation directory (searched recursively).
+input_dir: /path/to/A8HNE1_MDS
+output_dir: examples/alpha_zein_A8HNE1/mdforge_out
+
+# Trajectory slicing / performance
+start: 0
+end: null            # null => last frame
+stride: 1            # analyse every frame (increase for a quick look)
+core_extract: true   # cache a solute-only trajectory for fast structural analyses
+
+# Analysis selection
+analyses: null       # null => auto-select for the detected system
+exclude: []          # e.g. [sasa] to skip
+plugin_dirs: []      # extra folders of drop-in analysis plugins
+
+# Reproducibility / reporting
+seed: 0
+report_formats: [md, html]
+
+# Per-analysis parameter overrides (optional)
+params:
+  rmsd:
+    ref_frame: 0
+    window: 20
+  rmsf:
+    ref_frame: 0
+  rog:
+    window: 20

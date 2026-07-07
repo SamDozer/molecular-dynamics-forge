@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molecular-dynamics-forge"
+version = "0.2.0"
+description = "Reusable, extensible framework for reproducible analysis of GROMACS molecular dynamics simulations of arbitrary biomolecular systems."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Hossam Mahmoud" }]
+keywords = ["molecular-dynamics", "gromacs", "mdanalysis", "bioinformatics",
+            "trajectory-analysis", "reproducibility"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "MDAnalysis>=2.7",
+    "mdtraj>=1.10",
+    "scikit-learn>=1.3",
+    "networkx>=3.0",
+    "tqdm>=4.65",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+energy = ["panedr>=0.8"]                       # read .edr thermodynamics
+fingerprints = ["prolif>=2.0", "rdkit>=2023.3"] # interaction fingerprints
+pdf = ["weasyprint>=60"]                        # PDF report export
+ui = ["rich>=13.0"]                             # nicer CLI output
+dev = ["pytest>=7.0", "pytest-cov", "ruff"]
+all = ["panedr>=0.8", "prolif>=2.0", "rdkit>=2023.3", "weasyprint>=60", "rich>=13.0"]
+
+[project.urls]
+Homepage = "https://github.com/SamDozer/molecular-dynamics-forge"
+Repository = "https://github.com/SamDozer/molecular-dynamics-forge"
+
+[project.scripts]
+mdforge = "mdforge.cli.main:main"
+
+# Third-party packages advertise plugins under this entry-point group.
+# [project.entry-points."mdforge.plugins"]
+# my_analysis = "my_package.my_module"
+
+[tool.setuptools.packages.find]
+include = ["mdforge*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
