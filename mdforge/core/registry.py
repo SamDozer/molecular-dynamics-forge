@@ -64,8 +64,6 @@ class AnalysisRegistry:
         """
         self.ensure_builtins_loaded()
         selected, skipped = [], []
-        pool = self._analyses if requested is None else {
-            n: self._analyses[n] for n in requested if n in self._analyses}
         for name in (requested or sorted(self._analyses)):
             cls = self._analyses.get(name)
             if cls is None:
@@ -79,6 +77,8 @@ class AnalysisRegistry:
                 skipped.append((name, f"missing required files: {', '.join(sorted(missing))}"))
                 continue
             selected.append(cls)
+        # Run in declared order (convergence/statistics last), then alphabetically.
+        selected.sort(key=lambda c: (getattr(c, "order", 100), c.name))
         return selected, skipped
 
     # -- plugin / builtin loading ---------------------------------------- #

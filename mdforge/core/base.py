@@ -37,6 +37,9 @@ class BaseAnalysis(abc.ABC):
     supported_systems: set = {"*"}
     outputs: list[str] = []
     default_params: dict = {}
+    # Execution order (lower runs first). Analyses that read other analyses'
+    # CSVs (convergence, statistics) use a higher value so they run last.
+    order: int = 100
 
     # -- auto-registration ------------------------------------------------ #
     def __init_subclass__(cls, register: bool = True, **kwargs):

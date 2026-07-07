@@ -83,6 +83,20 @@ class SystemType(str, Enum):
     UNKNOWN = "unknown"
 
 
+# Convenience set: every system type that contains a protein (analyses needing a
+# protein declare ``supported_systems = PROTEIN_SYSTEMS``).
+PROTEIN_SYSTEMS = {
+    SystemType.PROTEIN_ONLY, SystemType.PROTEIN_PROTEIN, SystemType.PROTEIN_PEPTIDE,
+    SystemType.PROTEIN_LIGAND, SystemType.PROTEIN_DNA, SystemType.PROTEIN_RNA,
+    SystemType.PROTEIN_MEMBRANE, SystemType.MIXED,
+}
+# Systems with >= 2 macromolecular partners (interface analyses apply).
+COMPLEX_SYSTEMS = {
+    SystemType.PROTEIN_PROTEIN, SystemType.PROTEIN_PEPTIDE, SystemType.PROTEIN_DNA,
+    SystemType.PROTEIN_RNA,
+}
+
+
 def _classify_resname(resname: str) -> ComponentType:
     r = resname.strip().upper()
     if r in _AMINO:
