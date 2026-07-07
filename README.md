@@ -78,14 +78,20 @@ Every analysis subclasses `BaseAnalysis`, declaring `required_files`,
 `supported_systems`, `outputs` and `default_params`; subclasses auto-register, so
 **detection → selection → run → report** is entirely data-driven.
 
-## Analyses
+## Analyses (24 built-in)
 
-Structure/dynamics analyses ship built-in and more are being ported from the
-reference pipeline: **RMSD, RMSF, radius of gyration, SASA** (built-in now);
-**H-bonds, PCA + free-energy landscape, DCCM, contact maps, clustering, DSSP,
-salt bridges, native contacts, energies, convergence, RIN, ProLIF, MM/PBSA
-workflow, interface & buried-surface analyses** (from [`legacy/`](legacy),
-porting incrementally — each is a drop-in `BaseAnalysis`).
+| System scope | Analyses |
+|---|---|
+| **Any system** | RMSD, radius of gyration, SASA, COM, H-bonds, energies (`.edr`), ProLIF, MM/PBSA workflow, statistics |
+| **Protein** | RMSF, structural descriptors (Dmax/κ²/volume), native contacts (Q), contact map, DSSP secondary structure, RIN, PCA + free-energy landscape, DCCM, clustering, salt bridges, convergence (RMSIP/block-avg), end-to-end *(plugin)* |
+| **Complex** (protein–protein/–nucleic) | interface (BSA, contacts, iRMSD) |
+| **Protein–ligand** | ligand RMSD, ligand contacts, binding pocket |
+| **Protein–DNA/RNA** | protein–nucleic contacts, nucleic RMSD |
+
+Each is a drop-in `BaseAnalysis`; the pipeline runs only those applicable to the
+detected system (`mdforge list-analyses` shows all; `--plan` shows what runs and why).
+The complex/ligand/nucleic modules are implemented and gate correctly but await
+validation on a matching test trajectory.
 
 ## Reproducibility
 
