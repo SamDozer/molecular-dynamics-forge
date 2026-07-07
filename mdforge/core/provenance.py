@@ -116,12 +116,13 @@ class RunManifest:
         outdir.mkdir(parents=True, exist_ok=True)
         written = []
         jp = outdir / "manifest.json"
-        jp.write_text(json.dumps(self.data, indent=2, default=str))
+        jp.write_text(json.dumps(self.data, indent=2, default=str), encoding="utf-8")
         written.append(jp)
         try:
             import yaml
             yp = outdir / "manifest.yaml"
-            yp.write_text(yaml.safe_dump(self.data, sort_keys=False))
+            yp.write_text(yaml.safe_dump(self.data, sort_keys=False, allow_unicode=True),
+                          encoding="utf-8")
             written.append(yp)
         except Exception:
             pass
