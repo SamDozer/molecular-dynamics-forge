@@ -10,6 +10,7 @@ type: software
 authors:
   - family-names: Mahmoud
     given-names: Hossam
+    orcid: "https://orcid.org/0009-0004-7804-4174"
 repository-code: "https://github.com/SamDozer/molecular-dynamics-forge"
 url: "https://github.com/SamDozer/molecular-dynamics-forge"
 license: MIT

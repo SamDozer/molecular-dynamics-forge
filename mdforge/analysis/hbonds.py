@@ -72,6 +72,47 @@ class HydrogenBonds(BaseAnalysis):
             a.spines["top"].set_visible(False); a.spines["right"].set_visible(False)
         plotting.save_figure(fig, ctx.fig_path("hbonds_timeseries"), dpi=ctx.config.dpi)
 
+        # --- per-pair occupancy + donor/acceptor table (protein-protein) ---
+        occ_df = _occupancy_table(u, hba_pp, n)
+        ctx.write_csv(occ_df, "hbonds_occupancy.csv")
+        occ_df.head(40).to_csv(ctx.table_path("hbonds_donor_acceptor.csv"), index=False)
+        if len(occ_df):
+            top = occ_df.head(20)
+            fig, ax = plotting.new_axes(figsize=(7.6, 5.6))
+            ax.barh(range(len(top)), top["occupancy_percent"], color=PALETTE["green"])
+            ax.set_yticks(range(len(top)))
+            ax.set_yticklabels((top["donor"] + " -> " + top["acceptor"]).tolist(), fontsize=8)
+            ax.invert_yaxis(); ax.set_xlabel("Occupancy (%)")
+            ax.set_title("Top intramolecular H-bonds by occupancy")
+            plotting.save_figure(fig, ctx.fig_path("hbonds_occupancy"), dpi=ctx.config.dpi)
+
+        # --- effective lifetime from the H-bond autocorrelation ---
+        lifetime_ps = None
+        try:
+            _tau, hbl = hba_pp.lifetime(tau_max=min(25, n - 1))
+            _trapz = getattr(np, "trapezoid", None) or np.trapz
+            lifetime_ps = float(_trapz(hbl, dx=u.trajectory.dt * stride))
+        except Exception as e:
+            print(f"[hbonds] lifetime skipped: {e}")
+
         return {"protein_protein": st.describe(counts_pp, "hbonds_pp"),
                 "protein_solvent": st.describe(counts_ps, "hbonds_ps"),
+                "n_persistent_pp": int((occ_df["occupancy_percent"] >= 50).sum()) if len(occ_df) else 0,
+                "lifetime_ps": lifetime_ps,
                 "figure": "hbonds_timeseries"}
+
+
+def _occupancy_table(u, hba, n_frames: int) -> pd.DataFrame:
+    """Per donor-acceptor-pair occupancy (%) from an HBA result."""
+    hbonds = getattr(hba.results, "hbonds", None)
+    if hbonds is None or len(hbonds) == 0:
+        return pd.DataFrame(columns=["donor", "acceptor", "count", "occupancy_percent"])
+    atoms = u.atoms
+    rows: dict = {}
+    for row in hbonds:
+        da, aa = atoms[int(row[1])], atoms[int(row[3])]
+        key = (f"{da.resname}{da.resid}:{da.name}", f"{aa.resname}{aa.resid}:{aa.name}")
+        rows[key] = rows.get(key, 0) + 1
+    data = [{"donor": d, "acceptor": a, "count": c, "occupancy_percent": 100.0 * c / n_frames}
+            for (d, a), c in rows.items()]
+    return pd.DataFrame(data).sort_values("occupancy_percent", ascending=False).reset_index(drop=True)
