@@ -3,6 +3,7 @@
 [![CI](https://github.com/SamDozer/molecular-dynamics-forge/actions/workflows/ci.yml/badge.svg)](https://github.com/SamDozer/molecular-dynamics-forge/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21265946.svg)](https://doi.org/10.5281/zenodo.21265946)
 
 **mdforge** turns a GROMACS simulation directory into a complete, publication-quality,
 fully reproducible analysis — with minimal input. Point it at a folder; it discovers
@@ -105,6 +106,16 @@ cat results/manifest.json     # versions, git commit, seeds, params, input hashe
 docker build -t mdforge .
 docker run --rm -v /data/sim:/sim mdforge analyze --input /sim --output /sim/results
 ```
+
+## Citation
+
+If you use mdforge, please cite it (concept DOI — always resolves to the latest version):
+
+> Mahmoud, H. *mdforge: a reusable, reproducible analysis framework for GROMACS
+> molecular dynamics simulations.* Zenodo. https://doi.org/10.5281/zenodo.21265946
+
+A machine-readable [`CITATION.cff`](CITATION.cff) is included (GitHub shows a
+"Cite this repository" button).
 
 ## License
 

@@ -15,6 +15,7 @@ url: "https://github.com/SamDozer/molecular-dynamics-forge"
 license: MIT
 version: 0.2.0
 date-released: "2026-07-08"
+doi: 10.5281/zenodo.21265946
 keywords:
   - molecular dynamics
   - GROMACS
@@ -22,5 +23,3 @@ keywords:
   - trajectory analysis
   - bioinformatics
   - reproducibility
-# After the first Zenodo release, add the minted concept DOI here, e.g.:
-# doi: 10.5281/zenodo.XXXXXXX
