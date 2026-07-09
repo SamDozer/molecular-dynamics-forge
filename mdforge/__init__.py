@@ -14,7 +14,7 @@ Public API
 
 from __future__ import annotations
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __author__ = "Hossam Mahmoud"
 
 # Re-export the most commonly used entry points (kept import-light).

@@ -14,7 +14,7 @@ authors:
 repository-code: "https://github.com/SamDozer/molecular-dynamics-forge"
 url: "https://github.com/SamDozer/molecular-dynamics-forge"
 license: MIT
-version: 0.2.0
+version: 0.2.1
 date-released: "2026-07-08"
 doi: 10.5281/zenodo.21265946
 keywords:
