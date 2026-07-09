@@ -107,6 +107,16 @@ docker build -t mdforge .
 docker run --rm -v /data/sim:/sim mdforge analyze --input /sim --output /sim/results
 ```
 
+## Roadmap
+
+See **[ROADMAP.md](ROADMAP.md)** for the plan — the flagship being a
+**comparison mode** (`mdforge compare`) that overlays control vs. protein–ligand /
+protein–protein systems on shared axes (ΔRMSF maps, common-subspace PCA, ensemble
+similarity), plus parallel execution, a functional API, membrane and multi-engine
+support — drawing design influence from
+[MDAnalysis](https://github.com/MDAnalysis/mdanalysis) and
+[mdtraj](https://github.com/mdtraj/mdtraj).
+
 ## Citation
 
 If you use mdforge, please cite it (concept DOI — always resolves to the latest version):
